@@ -99,7 +99,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userSql.setId(Integer.parseInt(id));
                 userSql.setPassword(password);
                 userSql.setName(name);
-                userSql.save();
+                //抛异常存储
+//                userSql.saveThrows();
+                if (userSql.save()) {
+                    toas("添加成功");
+                } else {
+                    toas("添加失败");
+                }
                 break;
         }
     }

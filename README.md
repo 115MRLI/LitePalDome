@@ -11,9 +11,71 @@ LitePal 2.0  练习dome
 
 对，没错是跟新了，方法大多已经过时，郭神又细心的出了新版，而且附了Kotlin中使用的方法，所以我也心怀忐忑的写一个dome。对，我不止懒还是一个啰嗦的人
 
+### 环境的搭建
+
+基本的配置基本上在网上随便一查就是一大堆就是简单的说明一下，毕竟码字还是蛮累的
+
+1. 基本的添加依赖  implementation 'org.litepal.android:core:2.0.0'
+
+2. 配置litepal.xml，在项目的assets目录下面新建一个litepal.xml文件，并将以下代码拷贝进去
+
+        
+        <?xml version="1.0" encoding="utf-8"?>
+        <litepal>
+            <dbname value="你创建的数据库名字" ></dbname>
+            <version value="数据库版本号" ></version>
+            <list>
+               //你创建的表格表格要详细地址
+                <mapping class="dome.test.litepaldome.model.UserSql"></mapping>
+            </list>
+        </litepal>
+
+3. 配置LitePalApplication
+
+          <manifest>
+            <application
+                android:name="org.litepal.LitePalApplication"
+                ...
+            >
+            ...
+         </application>
+ 
+有可能你的程序中有自己配置的Application 也可以这样配置
+
+        <manifest>
+            <application
+                android:name="com.example.MyApplication"
+                ...
+            >
+            ...
+            </application>
+        </manifest>
+
+只需要让你的Application继承LitePalApplication就可以了
+
+        public class MyApplication extends LitePalApplication {
+            ...
+        }
+        
+这样基本配置结束了可以配置自己需要的表了，表的创建亦是非常简单（这个bean类是要继承LitePalSupport，这样你才可以对表进行增删改查）
 
 
-## 数据库查询
+        public class UserSql extends LitePalSupport{
+        	
+        	private int id;
+        	
+        	private String account;
+        	
+        	private String password;
+        	
+        	private String name;
+        	
+        	// 自动生成get、set方法
+        	...
+        }
+
+        
+### 数据库查询
 
 查询表内所有数据
 
@@ -26,3 +88,20 @@ LitePal 2.0  练习dome
 另外还可以做一些模糊查询，具体需要什么要按照自己的喜好使用
 
     List<Song> songs = LitePal.where("name like ? and duration < ?", "song%", "200").order("duration").find(Song.class);
+    
+    
+### 数据添加
+
+         
+         UserSql userSql = new UserSql();
+         userSql.setAccount(account);
+         userSql.setId(Integer.parseInt(id));
+         userSql.setPassword(password);
+         userSql.setName(name); 
+         //抛异常存储
+         //userSql.saveThrows();
+         if (userSql.save()) {
+             toas("添加成功");
+         } else {
+              toas("添加失败");
+         }
