@@ -70,8 +70,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.del_button:
+                id = idEdit.getText().toString().trim();
+                if (TextUtils.isEmpty(id)) {
+                    LitePal.deleteAll(UserSql.class, "id > ?", "350");
+                } else {
+                    LitePal.delete(UserSql.class, Integer.parseInt(id));
+                }
                 break;
             case R.id.update_button:
+                id = idEdit.getText().toString().trim();
+                if (!TextUtils.isEmpty(id)) {
+                    UserSql userSql = new UserSql();
+                    String account = accountEdit.getText().toString().trim();
+                    String password = passwordEdit.getText().toString().trim();
+                    String name = nameEdit.getText().toString().trim();
+                    userSql.setAccount(account);
+                    userSql.setPassword(password);
+                    userSql.setName(name);
+                    updateForId(id, userSql);
+                } else {
+                    toas("把要修改的id填上");
+                }
                 break;
             case R.id.add_button:
                 UserSql userSql = new UserSql();
@@ -137,6 +156,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             return song.toString();
         }
+    }
+
+    /**
+     * 根据id修改数据
+     *
+     * @param id
+     * @param userSql
+     */
+    private void updateForId(String id, UserSql userSql) {
+        userSql.update(Integer.parseInt(id));
     }
 
     /**

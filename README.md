@@ -107,3 +107,49 @@ save()的返回值是Boolean类型的可以根据返回值判断是否存储成�
          } else {
               toas("添加失败");
          }
+         
+### 数据修改
+
+根据id修改 
+     
+    UserSql userSql = new UserSql();
+    userSql.setAccount(account);
+    userSql.setPassword(password);
+    userSql.setName(name);
+    userSql.update(Integer.parseInt(id));
+    
+直接调用save()覆盖修改
+
+         UserSql userSql = new UserSql();
+         userSql.setAccount(account);
+         userSql.setId(Integer.parseInt(id));
+         userSql.setPassword(password);
+         userSql.setName(name); 
+         if (userSql.save()) {
+             toas("修改成功");
+         } else {
+              toas("修改失败");
+         }
+
+或者直接通过条件范围修改
+
+        UserSql userSql = new UserSql();
+        userSql.setAccount(account);
+        userSql.updateAll("name = ?", "album");
+        
+        
+### 数据的删除
+
+根据id直接删除单条数据
+
+     LitePal.delete(UserSql.class, Integer.parseInt(id));
+     
+根据条件范围删除 
+
+    LitePal.deleteAll(UserSql.class, "id > ?", "350");
+    
+    
+以上就是怎删改查其实还有好多细枝末节都没有讲到，比如修改表结构后数据库升级，多表关联等等等，这些可以从郭神的博客上找到，我也不一一细讲，将我郭神的博客抛出
+
+郭神博客数据库篇
+https://blog.csdn.net/guolin_blog/article/category/2522725
