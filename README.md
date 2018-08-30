@@ -91,7 +91,9 @@ LitePal 2.0  练习dome
     
     
 ### 数据添加
-
+    
+数据的存储直接调用save()或者saveThrows()，这里看自己的需求，saveThrows()是抛异常的存储如果出错可以自己捕捉异常
+save()的返回值是Boolean类型的可以根据返回值判断是否存储成功
          
          UserSql userSql = new UserSql();
          userSql.setAccount(account);
