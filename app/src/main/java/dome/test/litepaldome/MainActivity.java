@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.litepal.LitePal;
 import org.w3c.dom.Text;
@@ -78,7 +79,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String account = accountEdit.getText().toString().trim();
                 String password = passwordEdit.getText().toString().trim();
                 String name = nameEdit.getText().toString().trim();
-
+                if (TextUtils.isEmpty(id)) {
+                    toas("把id填上");
+                    return;
+                }
+                if (TextUtils.isEmpty(account)) {
+                    toas("把账号填上");
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    toas("把密码填上");
+                    return;
+                }
+                if (TextUtils.isEmpty(name)) {
+                    toas("把昵称填上");
+                    return;
+                }
+                userSql.setAccount(account);
+                userSql.setId(Integer.parseInt(id));
+                userSql.setPassword(password);
+                userSql.setName(name);
+                userSql.save();
                 break;
         }
     }
@@ -110,6 +131,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             return song.toString();
         }
+    }
 
+    /**
+     * 吐司内容
+     *
+     * @param content
+     */
+    private void toas(String content) {
+        Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
     }
 }
